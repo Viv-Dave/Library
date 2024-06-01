@@ -4,7 +4,7 @@ const bookdisplay = document.getElementById('bookdisplay');
 const AMemoryCalledEmpire = new Book("A Memory called Empire", "Arkady Martine", 462, "not read yet");
 const Dune = new Book("Dune", "Frank Herbert", 800, "read");
 const dialogElem = document.getElementById("dialog");
-const showBtn = document.querySelector(".show");
+const showBtn = document.getElementById("show");
 const closeBtn = document.querySelector(".close");
 const form  = document.getElementById('form')
 const bookdisplaycontainer = document.getElementById('bookdisplaycontainer');
@@ -13,20 +13,24 @@ showBtn.addEventListener("click", () => {
     dialogElem.showModal();
 });
 closeBtn.addEventListener("click", () => {
+    //SDialog won't send the data to the server directly
     event.preventDefault();
     dialogElem.close();
+    //Collecting data from the form
     const formData = new FormData(form);
     const bookname = formData.get('bookname');
     const author = formData.get('bookauthor');
     const pages = formData.get('bookpages')
     const readingStatus = formData.get('readingstatus')
+    //Checking whether data has been received.
     console.log(bookname);
     console.log(author);
     console.log(pages);
     console.log(readingStatus);
-    const newBook = new Book(bookname, author, pages);
+    const newBook = new Book(bookname, author, pages, readingStatus);
     myLibrary.push(newBook);
     displayonScreen(newBook);
+    form.reset();
 });
 
 // Displaying text
@@ -45,7 +49,7 @@ function displayonScreen(book) {
 
     // Create paragraph element for the book info
     var bookInfo = document.createElement("p");
-    bookInfo.textContent = `Author: ${book.author}\nPages: ${book.pages}`;
+    bookInfo.textContent = `Author: ${book.author}\nPages: ${book.pages} \nReading Status: ${book.status}`;
     bookInfo.style.whiteSpace = "pre-wrap";
     div.classList.add("text");
 
@@ -68,8 +72,9 @@ function displayonScreen(book) {
     removebtn.addEventListener('click', function() {
         bookdisplaycontainer.removeChild(div);
     });
-}
 
+}
+// BookInfo Constructor
 function Book(name, author, pages, status) {
     this.name = name;
     this.author = author;

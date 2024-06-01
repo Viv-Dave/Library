@@ -1,2 +1,2 @@
 # Library
-Library to keep a check of whether you have read a book or not
+Not the prettiest UI, but it does the work ;-)
